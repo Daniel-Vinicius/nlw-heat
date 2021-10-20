@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
+import { toast } from "react-toastify";
 
 import styles from './styles.module.scss';
 import logoImg from '../../assets/logo.svg';
@@ -43,7 +44,13 @@ export function MessageList() {
 
   useEffect(() => {
     api.get<Message[]>('/messages/last3')
-      .then((response) => setMessages(response.data));
+      .then((response) => setMessages(response.data))
+      .catch((error) => {
+        toast.error("Houve ao tentar listar as mensagens.", {
+          theme: 'colored',
+          icon: false,
+        });
+      })
   }, []);
 
   return (

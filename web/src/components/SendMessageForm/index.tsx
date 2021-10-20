@@ -1,5 +1,6 @@
 import { FormEvent, useState } from 'react';
 import { VscGithubInverted, VscSignOut } from 'react-icons/vsc';
+import { toast } from "react-toastify";
 
 import styles from './styles.module.scss';
 
@@ -11,14 +12,26 @@ export function SendMessageForm() {
   const [message, setMessage] = useState('');
 
   async function handleSendMessage(event: FormEvent) {
-    event.preventDefault();
+    try {
+      event.preventDefault();
 
-    if (!message.trim()) {
-      return;
+      if (!message.trim()) {
+        return;
+      }
+
+      await api.post('/messages', { message });
+      setMessage('');
+
+      toast.success("Mensagem enviada com sucesso!", {
+        theme: 'colored',
+        icon: false,
+      });
+    } catch (error) {
+      toast.error("Houve um erro ao tentar enviar a mensagem.", {
+        theme: 'colored',
+        icon: false,
+      });
     }
-
-    await api.post('/messages', { message });
-    setMessage('');
   }
 
   return (

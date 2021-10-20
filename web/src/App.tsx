@@ -1,3 +1,5 @@
+import { ToastContainer } from "react-toastify";
+
 import styles from './App.module.scss';
 
 import { MessageList } from './components/MessageList';
@@ -10,9 +12,12 @@ export function App() {
   const { user } = useAuth();
 
   return (
-    <main className={`${styles.contentWrapper} ${user && styles.contentSigned}`}>
-      <MessageList />
-      {user && user.id ? <SendMessageForm /> : <LoginBox />}
-    </main>
+    <>
+      <ToastContainer autoClose={5000} />
+      <main className={`${styles.contentWrapper} ${user && styles.contentSigned}`}>
+        <MessageList />
+        {user && user.id ? <SendMessageForm /> : <LoginBox />}
+      </main>
+    </>
   )
 }
